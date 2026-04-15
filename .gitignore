@@ -1,29 +1,35 @@
-﻿# Database
-data/
-*.db
-*.mv.db
-*.trace.db
-
-# IDE
-.idea/
-*.iml
-.classpath
-.project
-.settings/
-.vscode/
-.mvn/
-
-# Build
-target/
+# Java / Spring Boot
+**/target/
+**/data/
 *.class
 *.jar
 *.war
 *.log
+
+# Python
+**/__pycache__/
+**/venv/
+**/venv_*/
+*.pyc
+*.pyo
+
+# YOLO / Modèles
+**/runs/
+*.pt
+!*.pt
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
 
 # OS
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Application
-application-local.properties
+# Docker
+*.pid
