@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Historique des analyses</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+  <h1>📋 Historique des analyses</h1>
+  <table border="1" style="width:100%; border-collapse: collapse;">
+    <tr style="background:#f2f2f2;">
+      <th>ID</th><th>Image</th><th>Gravité</th><th>Conseil</th><th>Montant</th><th>Date</th>
+    </tr>
+    <tr th:each="a : ${analyses}">
+      <td th:text="${a.id}"></td>
+      <td th:text="${a.imageName}"></td>
+      <td th:text="${a.gravite}"></td>
+      <td th:text="${a.conseil}"></td>
+      <td th:text="${a.montantEstime}"></td>
+      <td th:text="${a.createdAt}"></td>
+    </tr>
+  </table>
+  <br>
+  <a href="/" class="btn-new">🔄 Nouvelle analyse</a>
+</div>
+</body>
+</html>

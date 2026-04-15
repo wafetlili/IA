@@ -1,0 +1,29 @@
+﻿# Database
+data/
+*.db
+*.mv.db
+*.trace.db
+
+# IDE
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.vscode/
+.mvn/
+
+# Build
+target/
+*.class
+*.jar
+*.war
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Application
+application-local.properties

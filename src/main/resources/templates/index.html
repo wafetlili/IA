@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Analyse Catastrophe</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 Analyse de Catastrophe Naturelle</h1>
+        <div class="upload-area">
+            <div class="upload-icon">📸</div>
+            <p>Uploadez une photo de la catastrophe</p>
+            <form method="post" action="/analyser" enctype="multipart/form-data">
+                <input type="file" name="image" accept="image/*" required>
+                <button type="submit" class="btn-analyze">🔍 Analyser l'image</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Résultat - Analyse Catastrophe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .result-card {
+            margin-top: 20px;
+        }
+
+        .result-image-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .gravite {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .gravite.urgent {
+            background: #dc3545;
+        }
+
+        .conseil {
+            background: #ffc107;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .details {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .btn-new {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-new:hover {
+            background: #138496;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        /* Carte thermique */
+        .heatmap-image {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Critères influents */
+        .criteres-list {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .criteres-list li {
+            margin: 5px 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            list-style: none;
+            border-left: 3px solid #ffc107;
+        }
+
+        /* Détections */
+        .detections-list {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .detections-list li {
+            margin: 5px 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            list-style: none;
+            border-left: 3px solid #28a745;
+        }
+
+        .info-block {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .info-block h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Résultat de l'analyse</h1>
+        
+        <!-- Affichage d'une éventuelle erreur -->
+        <div th:if="${error}" class="error-message">
+            ⚠️ <span th:text="${error}"></span>
+        </div>
+        
+        <!-- Affichage du résultat -->
+        <div th:if="${result}" class="result-card">
+            
+            <!-- Image analysée -->
+            <div class="result-image-container">
+                <img th:src="'data:image/jpeg;base64,' + ${imageBase64}" class="result-image">
+            </div>
+            
+            <!-- Gravité -->
+            <div class="gravite" th:classappend="${result.gravite >= 4} ? 'urgent' : ''">
+                🔥 Gravité : <span th:text="${result.gravite}"></span>/5
+            </div>
+            
+            <!-- Conseil -->
+            <div class="conseil">
+                ⚠️ <span th:text="${result.conseil}"></span>
+            </div>
+            
+            <!-- Détails de base -->
+            <div class="details">
+                <p>📊 Objets détectés : <span th:text="${result.nb_objets}"></span></p>
+            </div>
+            
+            <!-- ============================================ -->
+            <!-- CARTE THERMIQUE (HEATMAP)                    -->
+            <!-- ============================================ -->
+            <div th:if="${result.heatmap}" class="info-block">
+                <h3>🔥 Carte thermique (zones d'influence)</h3>
+                <img th:src="'data:image/jpeg;base64,' + ${result.heatmap}" class="heatmap-image">
+            </div>
+            
+            <!-- ============================================ -->
+            <!-- CRITÈRES INFLUENTS                            -->
+            <!-- ============================================ -->
+            <div th:if="${result.criteres != null and !result.criteres.isEmpty()}" class="info-block">
+                <h3>🎯 Critères influents</h3>
+                <ul class="criteres-list">
+                    <li th:each="c : ${result.criteres}" th:text="${c.type} + ' : ' + ${c.poids} + '%'"></li>
+                </ul>
+            </div>
+            
+            <!-- ============================================ -->
+            <!-- DÉTECTIONS SPÉCIFIQUES                       -->
+            <!-- ============================================ -->
+            <div th:if="${result.details}" class="info-block">
+                <h3>🔍 Détections</h3>
+                <ul class="detections-list">
+                    <li th:if="${result.details.feu_detecte}">🔥 Feu détecté</li>
+                    <li th:if="${result.details.inondation_detectee}">💧 Inondation détectée</li>
+                    <li th:if="${result.details.fumee_detectee}">💨 Fumée détectée</li>
+                    <li th:unless="${result.details.feu_detecte or result.details.inondation_detectee or result.details.fumee_detectee}">
+                        ✅ Aucune catastrophe spécifique détectée
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Bouton retour -->
+            <a href="/" class="btn-new">🔄 Nouvelle analyse</a>
+        </div>
+    </div>
+</body>
+</html>
